@@ -1,0 +1,39 @@
+<sdf version='1.7'>
+  <world name='mundo_do_hovercraft'>
+
+    <include>
+      <uri>model://sun</uri>
+    </include>
+
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+
+    <model name='alvo_roxo'>
+      <pose>2 0 0.5 0 0 0</pose> 
+      <link name='link_do_alvo'>
+        <visual name='visual_do_alvo'>
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius> <length>1.0</length> 
+            </cylinder>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Purple</name> </script>
+          </material>
+        </visual>
+        <collision name='colisao_do_alvo'>
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+
+  </world>
+</sdf>
