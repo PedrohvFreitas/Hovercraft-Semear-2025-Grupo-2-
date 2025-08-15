@@ -7,10 +7,11 @@ from std_msgs.msg import Float64
 from geometry_msgs.msg import Twist
 from cv_bridge import CvBridge, CvBridgeError
 
+detected_estate = 0
+
 def imagem_callback(cam_image):
 
-    rospy.loginfo("Função de callback foi chamada")
-    detected_estate = 0
+    global detected_estate
 
     try:
         frame = bridge.imgmsg_to_cv2(cam_image, desired_encoding='bgr8')
@@ -41,26 +42,31 @@ def imagem_callback(cam_image):
     if(M['m00'] > min):
         cx = int(M['m10'] / M['m00'])
         cy = int(M['m01'] / M['m00'])
-        
-        rospy.loginfo("Objeto detectado")
+
+
+        if detected_estate == 0:
+            rospy.loginfo("Objeto detectado")
+            detected_estate = 1
         
         #Mexer nessa parte do controle dps, fazer o PID e sofisticar a forma como o robo anda
         centro_tela = largura/2
 
         erro = Float64()
 
-        erro = cx - centro_tela
+        erro.data = cx - centro_tela
 
         pub_distx.publish(erro)
 
-        cmd.angular.z = -0.005 * erro #Ajustar o valor da multiplicação 
+        cmd.angular.z = -0.005 * erro.data #Ajustar o valor da multiplicação 
         cmd.linear.x = 1.0
 
         pub_vel.publish(cmd)
     
     else:
 
-        rospy.loginfo("Objeto não detectado")
+        if detected_estate == 1:
+            rospy.loginfo("Objeto não detectado")
+            detected_estate = 0
 
         cmd.linear.x = 0.0
         cmd.angular.z = 1.0
