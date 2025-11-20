@@ -3,7 +3,7 @@ import rospy
 import RPi.GPIO as GPIO
 from std_msgs.msg import Float64
 
-PINO_ESC = 17 #numero do pino da ESC, Não sei qual é
+PINO_ESC = 2 #numero do pino da ESC, Não sei qual é
 FREQ_PWM = 50
 
 GPIO.setmode(GPIO.BCM)
